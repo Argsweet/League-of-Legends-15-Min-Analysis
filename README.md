@@ -79,6 +79,63 @@ Notably, Major league games tend to have **lower average kills and assists** at 
 
 ## Assessment of Missingness
 
+### MNAR Analysis
+
+**Missing Not at Random (MNAR)** refers to missingness that depends on the unobserved value itself — for example, high earners being less likely to report their income on a survey precisely _because_ it is high.
+
+In the Oracle's Elixir LoL dataset, a potential candidate for MNAR is the `ban` columns. Teams may strategically choose not to ban certain champions, and in some tournament formats or regions, bans may not be recorded precisely because no ban was made. However, it is difficult to confirm this without additional data — if we had access to **official tournament rulebooks or match metadata** indicating whether a ban slot was intentionally skipped vs simply not recorded, we could determine whether the missingness depends on the value itself or on an external observed variable like `league`, which would make it MAR instead.
+
+That said, after thorough investigation, most missingness in this dataset appears to be either **Missing by Design** (such as `goldat15` being absent when a game ends before 15 minutes) or **MAR** dependent on observed columns like `date` or `league`. We could not conclusively identify any column that is definitively **MNAR**, as there is no strong evidence that the missing values depend on the values themselves rather than on other observed variables.
+
+### MAR Analysis
+
+**Missing at Random (MAR)** refers to missingness that is not based on the missing values themselves, but is related to another column in the dataset. For example, political preference of a survey being missing for participants of younger ages, where missingness is explained by their age -- not their actual preference
+
+## INSERT HERE
+
+## Hypothesis Testing
+
+In the Oracle's Elixer LoL Dataset, each row has a column labeled **`league`**, denoting professional playing leagues that teams get matched and play in. Earlier in our cleaning step, we denoted a league as a "Major" league if it was from LCK, LEC, LCP, LTA N, LTA S, or LTA.
+
+Tier 1 Professional leagues, such as those above, are seen as more competitive -- leading to highly technical games with close stats between teams. In my hypothesis test, I wish to discover whether games played at a Major Tier 1 Professional Leagues have smaller gold differences between teams than Minor Leagues do.
+
+**Null Hypothesis**: Major (LCK, LEC, LCP, LTA N, LTA S, LTA) and minor leagues have the same mean absolute gold difference at 15 minutes and come from the same distribution
+
+**Alternative Hypothesis**: Minor leagues have a higher mean absolute gold difference at 15 minutes than major leagues, thus coming from a different distribution
+
+**Test Statistic**: Difference in absoluted gold differences between games in Major Leagues vs Minor Leagues
+
+$$|\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|$$
+
+**Significance Level**: 1%
+
+As this hypothesis seeks to detemine whether two populations come from the same distribution, we used a permuation test to investigate this difference.
+
+In our dataset, there are 2 rows per game — one for the Red Team (Participant ID 200) and one for the Blue Team (Participant ID 100).
+Each team has a value for **`golddiffat15`**, which denotes the gold difference between teams at 15 minutes. The value is mirrored across both rows, with one team's value being negative (implying they have less gold).
+
+Since we only care about each individual game in this permutation test, we reduced the dataset to **1 row per game** by filtering to a single Participant ID, then take the absolute value of **`golddiffat15`** — allowing us to compare the average gold difference at 15 minutes between Major and Minor leagues.
+
+> **Note**: While we take the absolute value of each game's gold difference, the test statistic itself — the difference between the two group means — is not absoluted. This is a one-sided hypothesis test, meaning we are specifically testing whether Minor leagues have a _higher_ mean gold difference than Major leagues, rather than simply whether they differ.
+
+## INSERT HERE
+
+Based on the hypothesis test performed, with a **p-value of approximately 0**, there is overwhelming evidence against the Null hypothesis, we **reject it in favor of the alternative**. Minor leagues have a statistically significantly higher mean absolute gold difference at 15 minutes than Major leagues. This could perhaps suggest that Tier 1 professional leagues are indeed more competitive, with teams staying closer in gold throughout the early game.
+
+## Framing a Prediction Problem
+
+Early game is one of the most important phases in League of Legends -- it sets the tone for the rest of the match and often gives fans an early indication of which team will come out on top. Our dataset includes statistics captured at different time markers throughout the game, such as **Gold, XP, Kills, Deaths, and Assists**, allowing us to analyze how early performance relates to final outcomes.
+
+This leads us to our core prediction problem:
+
+> _Can we predict match outcome from 15 minute stats alone?_
+
+This asks whether the early game truly sets the course for the rest of the match -- or whether there is still significant room for comeback. If 15 minute stats are strong predictors of the final outcome, it suggests that early game advantages are decisive in professional play.
+
+To address this question, we can the use of **binary classification** of `result` evaluated on accuracy as explored below
+
+## Baseline Model
+
 ---
 
 Our analysis is guided by two core questions:
