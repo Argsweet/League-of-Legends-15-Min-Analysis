@@ -179,22 +179,19 @@ Based on the hypothesis test performed, with a **p-value of approximately 0**, t
 
 Early game is one of the most important phases in League of Legends -- it sets the tone for the rest of the match and often gives fans an early indication of which team will come out on top. Our dataset includes statistics captured at different time markers throughout the game, such as **Gold, XP, Kills, Deaths, and Assists**, allowing us to analyze how early performance relates to final outcomes.
 
-This leads us to our core prediction problem:
+These details lead us to our core prediction problem:
 
 > _Can we predict match outcome from 15 minute stats alone?_
 
-This asks whether the early game truly sets the course for the rest of the match -- or whether there is still significant room for comeback. If 15 minute stats are strong predictors of the final outcome, it suggests that early game advantages are decisive in professional play.
+This question asks whether the early game truly sets the course for the rest of the match -- or whether there is still significant room for comeback. If 15 minute stats are strong predictors of the final outcome, it might suggest that early game advantages are decisive in professional play.
 
-To address this question, we can the use of **binary classification** of `result` evaluated on accuracy as explored below
+To address this question, I used **binary classification** to predict `result`, which I evaluated using accuracy.
 
 ## Baseline Model
 
-- Head of DF used
-- Standardize all columns
-- using just gold, xp, and cs information
-- Use of train test split to test our data on itself
-- Decision tree classifier, all of the features quantitative
-- accuracy score
+Since this is a binary classification problem, I decided to use a **Decision Tree Classifier** for my baseline model, which was trained upon all of our `gold`, `experience`, and `creep score` information at 15 minutes. Since all of the features are quantitative, not much transformation needed to be done -- I only used the **StandardScaler Transformer** to standardize each column's values, which would allow me to compare the columns directly.
+
+Additionally, I used a **train-test split** to train the dataset on itself, so that I might predict the accuracy of the model. After fitting, the accuracy of our test split was **73.11%**. While this model seems to work well enough for most our our data, there is still improvement space, as we explore in the next section.
 
 ## Final Model
 
@@ -203,17 +200,13 @@ In my final model, I decided to switch to a **Random Forest Classifier**, an ens
 - **`max_depth`**: Controls how deep each tree can grow.
 - **`n_estimators`**: Controls how many trees are in the forest. More trees generally improves stability and reduces variance, but with diminishing returns and increased computation time.
 
-By tuning these two hyperparameters, I had hoped to address some of the key weaknesses of a single decision tree, such as **overfitting** and **high variance**, while finding the optimal balance between model complexity and generalization.
+By tuning these two hyperparameters, I had hoped to address some of the key weaknesses of a single decision tree, such as **overfitting** and **high variance**, while finding the optimal balance between model complexity and generalization. Additionally, GridSearchCV would subject our model to a **5-fold cross validation**, a method to prevent **overfitting** -- one of the biggest issues of Decision Tree Classifiers.
 
-Additionally, I introduced more 15 minute stats, such as kills, deaths, and assists to help aid our prediction, as well as league tier for our later fairness analysis.
+Additionally, I introduced more 15 minute stats, such as `kills`, `deaths`, and `assists` to help aid our prediction, as well as `league_tier` for our later fairness analysis. These stats all give the model a better understanding of a teams position at 15 minutes, and would hopefully provide valuable predictive power for our final model to help us determine how useful 15-minute statstics are in predicting the outcome of a game.
 
-- Head of df
-- kill diff feature killsat15 opp_killsat15
-- 5 folds
-- one hot
-- accuracy
+When developing the model pipeline, I used a **FunctionTransformer** to calculate the difference of the features `killsat15` and `opp_killsat15`, similar to `golddiffat15`, `xpdiffat15`, and `csdiffat15`. I also used **OneHotEncoder** on `league_tier`, as it is a nominal categorical feature with no inherent ordering.
 
-Despite introducing more models and attempting to minimize the error in the Decision Tree through using a Random Forest Model and testing HyperParameters, we don't see much of an improvement in the overall Test Score (73.1% vs 74.27%). Its possible that this is simply the best we can do with only the 15 minute stats in our dataset. Despite the small improvement, I'm happy with the result, as it shows how we can pretty accurately determine the outcome of a game on just the 15 minute statistics alone, with our error showing there is still room for comeback before then. Below, I've attached a confusion matrix to show how our model performed, noting our True Positives, True Negatives, False Positives, and False Negatives
+Despite introducing more models and testing hyperparameters, we don't see much of an improvement in the overall Test Accuracy, achieving only **74.27%**. Its possible that this is simply the best we can do with only the 15 minute stats in our dataset. Despite the small improvement, I'm happy with the result, as it shows how we can pretty accurately determine the outcome of a game on just the 15 minute statistics alone, with our error showing there is still room for comeback before then.
 
 ## Fairness Analysis
 
@@ -237,11 +230,3 @@ Together, these questions paint a picture of how early game performance differs 
   height="600"
   frameborder="0"
 ></iframe>
-
-| gameid                | side | result | kills | deaths | assists | firstblood | firstbloodkill | monsterkills | position | minionkills | league |
-| :-------------------- | :--- | -----: | ----: | -----: | ------: | ---------: | -------------: | -----------: | :------- | ----------: | :----- |
-| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      3 |       2 |          0 |              0 |           11 | top      |         220 | LCKC   |
-| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      5 |       6 |          1 |              0 |          115 | jng      |          33 | LCKC   |
-| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      2 |       3 |          0 |              0 |           16 | mid      |         177 | LCKC   |
-| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      4 |       2 |          1 |              0 |           18 | bot      |         208 | LCKC   |
-| ESPORTSTMNT01_2690210 | Blue |      0 |     1 |      5 |       6 |          1 |              1 |            0 | sup      |          42 | LCKC   |
