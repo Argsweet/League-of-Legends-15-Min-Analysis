@@ -164,19 +164,11 @@ Tier 1 Professional leagues, such as those above, are seen as more competitive -
 
 ### Test Details
 
-| Parameter              | Value                                                        |
-| ---------------------- | ------------------------------------------------------------ |
-| **Test Type**          | Permutation Test                                             |
-| **Significance Level** | 1%                                                           |
-| **Test Statistic**     | Difference in mean absolute gold differences (Minor − Major) |
-
-$$|\overline{\text{Gold Diff at 15 - Minor}}| - |\overline{\text{Gold Diff at 15 - Major}}|$$
-
-<div>
-|\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|
-</div>
-
-$$|\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|$$
+| Parameter              | Value                                        |
+| ---------------------- | -------------------------------------------- | ----- | --- | ----- | --- |
+| **Test Type**          | Permutation Test                             |
+| **Significance Level** | 1%                                           |
+| **Test Statistic**     | Difference in mean absolute `golddiffat15` ( | Minor | −   | Major | )   |
 
 As this hypothesis seeks to detemine whether two populations **come from the same distribution**, we used a **permuation test** to investigate this difference.
 
@@ -193,7 +185,7 @@ Since we only care about each individual game in this permutation test, we reduc
   height="600"
   frameborder="0"
 ></iframe>
-Based on the hypothesis test performed, with a **p-value of approximately 0**, there is overwhelming evidence against the Null hypothesis, we **reject it in favor of the alternative**. Minor leagues have a statistically significantly higher mean absolute gold difference at 15 minutes than Major leagues. This could perhaps suggest that Tier 1 professional leagues are indeed more competitive, with teams staying closer in gold throughout the early game.
+Based on the hypothesis test performed, with a **p-value of approximately 0**, there is overwhelming evidence against the Null hypothesis, **we reject the Null in favor of the Alternative**. Minor leagues have a statistically significantly higher mean absolute gold difference at 15 minutes than Major leagues. This could perhaps suggest that Tier 1 professional leagues are indeed more competitive, with teams staying closer in gold throughout the early game.
 
 ## Framing a Prediction Problem
 
@@ -234,12 +226,19 @@ Since there are many more Minor league games in this dataset (14408 vs 3254), it
 
 To answer this, I developed a **permutation test** to see if the difference in accuracy is significant. The following are my hypotheses:
 
-- **Null Hypothesis**: The classifier's accuracy is the same for both Major and Minor Leagues, any differences are due to chance.
+### Hypotheses
 
-- **Alternative Hypothesis**: The classifier's accuracy is higher for Minor Leagues.
+|                 | Hypothesis                                                                                                 |
+| --------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Null**        | The classifier's accuracy is the same for both Major and Minor Leagues, any differences are due to chance. |
+| **Alternative** | The classifier's accuracy is higher for Minor Leagues.                                                     |
 
-- **Test statistic**: Difference in accuracy (Minor minus Major)
-- **Significance level**: 0.05
+### Test Details
+
+| Parameter              | Value                                      |
+| ---------------------- | ------------------------------------------ |
+| **Significance Level** | 0.05                                       |
+| **Test Statistic**     | Difference in accuracy (Minor minus Major) |
 
 <iframe
   src="assets/fairness.html"
