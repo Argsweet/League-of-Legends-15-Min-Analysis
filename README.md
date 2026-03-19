@@ -53,12 +53,14 @@ Below is the head of the cleaned dataset:
 
 To begin the exploration of my dataset, I investigated the distribution of Gold at the **15 minute** mark.
 
-<iframe
-  src="assets/univar.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
+<div style="text-align: center;">
+    <iframe
+    src="assets/univar.html"
+    width="800"
+    height="600"
+    frameborder="0"
+    ></iframe>
+</div>
 
 This histogram of `goldat15` illustrates that the amount of gold teams accumulate by 15 minutes follows a roughly normal distribution, centered a bit under **25,000 gold**. The shape is noticeably right-skewed, with most teams falling between **22,000 and 28,000 gold** at the 15 minute mark. This distribution suggests that gold accumulation at 15 minutes is fairly consistent across professional games, with extreme values on either end being rare. In the context of our research question, this histogram helps establish what a "typical" 15 minute gold value looks like, providing a baseline for understanding how meaningful deviations from this range might be in predicting match outcomes.
 
