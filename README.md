@@ -94,11 +94,13 @@ Notably, Major league games tend to have **lower average kills and assists** at 
 
 ### MNAR Analysis
 
-**Missing Not at Random (MNAR)** refers to missingness that depends on the unobserved value itself — for example, high earners being less likely to report their income on a survey precisely _because_ it is high.
+#### MNAR Analysis
 
-In the Oracle's Elixir LoL dataset, a potential candidate for MNAR is the `ban` columns. Teams may strategically choose not to ban certain champions, and in some tournament formats or regions, bans may not be recorded precisely because no ban was made. However, it is difficult to confirm this without additional data — if we had access to **official tournament rulebooks or match metadata** indicating whether a ban slot was intentionally skipped vs simply not recorded, we could determine whether the missingness depends on the value itself or on an external observed variable like `league`, which would make it MAR instead.
+**Missing Not at Random (MNAR)** refers to missingness that is based on the actual missing values themselves, such as high incomes being missing on a survey because people dont want to report them.
 
-That said, after thorough investigation, most missingness in this dataset appears to be either **Missing by Design** (such as `goldat15` being absent when a game ends before 15 minutes) or **MAR** dependent on observed columns like `date` or `league`. We could not conclusively identify any column that is definitively **MNAR**, as there is no strong evidence that the missing values depend on the values themselves rather than on other observed variables.
+In the **total Oracle's Elixir LoL dataset**, potential candidates for MNAR are the `ban` columns. Teams may choose not to ban certain champions or simply run out of time to choose, and thus bans may not be recorded precisely because no ban was made. Perhaps if we had a column called `bans_skipped` that denotes the total number of bans skipped in the setup phase, we could explain the missingness and make it MAR
+
+That said, most missingness in the dataset we cleaned appears to be either **Missing by Design** (such as `goldat15` being absent when a game ends before 15 minutes) or **MAR** dependent on observed columns like `date` or `league`. We could not conclusively identify any of these columns were **MNAR**, as there is no strong evidence that the missing values depend on the values themselves rather than on other observed variables.
 
 ### MAR Analysis
 
@@ -218,3 +220,11 @@ Together, these questions paint a picture of how early game performance differs 
   height="600"
   frameborder="0"
 ></iframe>
+
+| gameid                | side | result | kills | deaths | assists | firstblood | firstbloodkill | monsterkills | position | minionkills | league |
+| :-------------------- | :--- | -----: | ----: | -----: | ------: | ---------: | -------------: | -----------: | :------- | ----------: | :----- |
+| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      3 |       2 |          0 |              0 |           11 | top      |         220 | LCKC   |
+| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      5 |       6 |          1 |              0 |          115 | jng      |          33 | LCKC   |
+| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      2 |       3 |          0 |              0 |           16 | mid      |         177 | LCKC   |
+| ESPORTSTMNT01_2690210 | Blue |      0 |     2 |      4 |       2 |          1 |              0 |           18 | bot      |         208 | LCKC   |
+| ESPORTSTMNT01_2690210 | Blue |      0 |     1 |      5 |       6 |          1 |              1 |            0 | sup      |          42 | LCKC   |
