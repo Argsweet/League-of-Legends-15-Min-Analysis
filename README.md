@@ -16,6 +16,21 @@ My analysis focuses on the impact of early game statistics on the rest of the ga
 
 After cleaning, my dataset consisted of **18472 rows and 19 columns**. These include:
 
+| Column                                     | Description                                                                                                                                                                      |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `result`                                   | Match outcome for the team. `True` = win, `False` = loss                                                                                                                         |
+| `participantid`                            | Team ID within the match — either `100` (Blue Side) or `200` (Red Side)                                                                                                          |
+| `league_tier`                              | Tier of the league the match was played in: **Major** (LCK, LEC, LCP, LTA, LTA S, LTA N), **International** (MSI, WLDs, EWC, IC, Asia Masters), or **Minor** (all other leagues) |
+| `split`                                    | The split the match was played in. Teams compete through a regular season before top performers advance to playoffs                                                              |
+| `date`                                     | Date and time of the match (`YYYY-MM-DD HH:MM:SS`)                                                                                                                               |
+| `length`                                   | Total duration of the game                                                                                                                                                       |
+| `goldat15`, `xpat15`, `csat15`             | The team's gold, XP, and CS totals at the 15-minute mark                                                                                                                         |
+| `golddiffat15`, `xpdiffat15`, `csdiffat15` | The team's gold, XP, and CS advantage/deficit relative to the opponent at 15 minutes                                                                                             |
+| `gold_lead_at15`                           | Boolean flag — `True` if the team had a positive `golddiffat15` at 15 minutes                                                                                                    |
+| `killsat15`, `opp_killsat15`               | Total kills for the team and opponent at 15 minutes                                                                                                                              |
+| `deathsat15`, `opp_deathsat15`             | Total deaths for the team and opponent at 15 minutes                                                                                                                             |
+| `assistsat15`, `opp_assistsat15`           | Total assists for the team and opponent at 15 minutes                                                                                                                            |
+
 - `result`: The outcome of the match for each specific team. True indicates the team that won, False indicates the team that lost
 - `participantid`: The individual ID for each player in a round. In our dataset, this consists of either 100 (Blue Side) or 200 (Red Side) to help us differentiate between teams
 - `league_tier`: Denotes the tier of the league the match was played in. 'Major' refers to games played in LCK, LEC, LCP, LTA, LTA S, or LTA N, all Tier 1 Professional Leagues. 'International' refers to games held in international competitions, such as MSI, WLDs, EWC, IC, and Asia Master, which host teams from both Major and Minor leagues. 'Minor' refers to games played in all other leagues.
