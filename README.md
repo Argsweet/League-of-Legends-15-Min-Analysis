@@ -152,9 +152,9 @@ Tier 1 Professional leagues, such as those above, are seen as more competitive -
 
 **Test Statistic**: Difference in absoluted gold differences between games in Major Leagues vs Minor Leagues
 
-<script type="math/tex; mode=display">
+<div>
 |\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|
-</script>
+</div>
 
 **Significance Level**: 1%
 
