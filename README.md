@@ -8,18 +8,18 @@ League of Legends (also known as LoL), is a popular multiplayer online battle (M
 
 This dataset provides information of each individual game, team, and player, recording statistics such as first blood, game length, number of kills, and results, culminating in a rich source of information for data analysis.
 
-A typical League of Legends game lasts between **25-35** minutes and consists of players killing monsters, fighting other players, and supporting their team. Much of this is done through accumulating gold and XP, features that allow players to buy items and \_\_\_. These features can be enhanced by kills and assists, which reward the player in gold. Having a large advantage in any of these statistics is key for winning a LoL game, and will be the basis of our analysis in this report.
+A typical League of Legends game lasts between **25-35** minutes and consists of players killing monsters, fighting other players, and supporting their team. Much of this is done through accumulating gold and XP, features that allow players to buy items and level up their champion's abilities. These features can be enhanced by kills and assists, which reward the player in gold. Having a **large advantage** in any of these statistics early on is key for winning a LoL game, and will be the basis of our analysis in this report.
 
-Our analysis focuses on the impact of early game statistics on the rest of the game, focusing on recording **15 minute features** such as gold, XP, Creep Score, Kills, and more. We wish to use these metrics to see how credible early game metrics are for setting the course of the rest of the game, and help us identify what room there is for comeback in professional games.
+My analysis focuses on the impact of early game statistics on the rest of the game, focusing on recording **15 minute features** such as gold, XP, Creep Score, Kills, and more. I wish to use these metrics to see how credible early game metrics are for setting the course of the rest of the game, and help identify what room there is for comeback in professional games.
 
 ### Data Description
 
-After cleaning, our dataset consisted of **18472 rows and 19 columns**. These include:
+After cleaning, my dataset consisted of **18472 rows and 19 columns**. These include:
 
 - `result`: The outcome of the match for each specific team. True indicates the team that won, False indicates the team that lost
 - `participantid`: The individual ID for each player in a round. In our dataset, this consists of either 100 (Blue Side) or 200 (Red Side) to help us differentiate between teams
 - `league_tier`: Denotes the tier of the league the match was played in. 'Major' refers to games played in LCK, LEC, LCP, LTA, LTA S, or LTA N, all Tier 1 Professional Leagues. 'International' refers to games held in international competitions, such as MSI, WLDs, EWC, IC, and Asia Master, which host teams from both Major and Minor leagues. 'Minor' refers to games played in all other leagues.
-- `split`:
+- `split`: Denotes which split the match was played in. Teams compete in regular season matches within their split, with top performers advancing to playoffs.
 - `date`: The date, formatted as YYYY-MM-DD XX:XX:XX
 - `length`: The total length of the game
 - `goldat15`, `xpat15`, `csat15`: The amount of gold, experience, or creep score the team had at the 15 minute mark, respectively
@@ -33,11 +33,20 @@ After cleaning, our dataset consisted of **18472 rows and 19 columns**. These in
 
 ### Data Cleaning
 
-To begin the data cleaning process, I reduced the amount of columns from the initial amount of 165 to only 19, focusing primarily on 15-minute statistics and important identifiers in the game, such as `result` and `league`. Then, I turned to the rows. In the Oracle's Elixer dataset, several columns are marked as having 'partial' completition in the `datacompleteness` column, indicating an incomplete collection of data. To best preserve the interests of my research question, I removed all rows marked as having 'partial' completion. Additionally, each recorded game in the dataframe consists of 12 rows - 5 for players of each team, and 2 for each teams aggregated statistics (denoted as 100 and 200). As we are interested in analyzing games from an aggregated point of view, I removed all rows where `participantid` did not equal either 100 or 200.
+To begin the data cleaning process, I reduced the amount of columns from the initial amount of **165** to only **19**, focusing primarily on **15-minute statistics** and important identifiers in the game, such as `result` and `league`. Then, I turned to the rows. In the Oracle's Elixer dataset, several columns are marked as having _"partial"_ completition in the `datacompleteness` column, indicating an **incomplete collection of data**. To best preserve the interests of my research question, I removed all rows marked as having _"partial"_ completion. Additionally, **.each recorded game in the dataframe consists of 12 rows**. - 5 for players of each team, and 2 for each teams aggregated statistics (denoted as 100 and 200). As we are interested in analyzing games from an aggregated point of view, I removed all rows where `participantid` did not equal either 100 or 200.
 
-Aside from basic data conversions, such as turning `results` into a Boolean column and converting `date` into a datetime column, I developed several columns to help aid my work later on. These include the `league_tier` column, where I manually developed the Major, Minor, and International Competition splits based on each row's `league`; as well as `gold_lead_at15`, a column that identifies all rows that had a positive `golddiffat15`, indicating that they had more gold at 15 minutes than the opposing side.
+Beyond basic data conversions -- such as casting `results` to a Boolean and
+parsing `date` into a datetime -- I engineered several additional columns to
+support later analysis. These include `league_tier`, which categorizes each
+match into **Major, Minor, or International** based on its `league` value,
+and `gold_lead_at15`, a boolean flag indicating whether a team held a positive
+`golddiffat15` at the 15-minute mark (i.e., had more gold than their opponent).
 
-Finally, I analyzed the missingness in my data, specifically in `split`, as this column didnt contribute much to the rest of the report, I decided to keep the Nan values as-is. Since 15% of the rows were missing `split`, dropping them would be unnecessary, whereas imputating a categorical column such as this wouldnt make much sense.
+Finally, I **assessed missingness** in the dataset, particularly in the `split`
+column. Since `split` plays no significant role in the rest of the analysis,
+I opted to leave its missing values as-is. Dropping the ~15% of rows with
+missing `split` values would result in unnecessary data loss, and imputing a
+categorical column of this nature would not be meaningful.
 
 Below is the head of the cleaned dataset:
 
@@ -75,7 +84,7 @@ To begin my bivariate analysis, I attempted to visualize some of the differences
   frameborder="0"
 ></iframe>
 
-To account for the difference in the number of Major vs Minor league games, I constructed a density histogram to fairly compare the distribution of `golddiffat15` across both tiers. Notably, the Major league distribution has a much **sharper and higher peak**, suggesting that gold differences in Tier 1 games are more tightly concentrated around 0. Major league games fall mostly between **-5,000 and 5,000 gold**, while Minor league games span a noticeably wider range of roughly **-7,000 to 7,000 gold**. This visual difference is supported by further calculations -- Minor league games exhibit **~73.7% more variance** in `golddiffat15` than Major league games, suggesting a more volatile early game landscape where leads are larger and less evenly matched. This sets the stage for our hypothesis test, where we formally investigate whether this difference is statistically significant.
+To account for the difference in the number of Major vs Minor league games, I constructed a density histogram to fairly compare the distribution of `golddiffat15` across both tiers. Notably, the Major league distribution has a much **sharper and higher peak**, suggesting that gold differences in Tier 1 games are more tightly concentrated around 0. Major league games fall mostly between **-5,000 and 5,000 gold**, while Minor league games span a noticeably wider range of roughly **-7,000 to 7,000 gold**. This visual difference is supported by further calculations -- Minor league games exhibit **~73.7% more variance** in `golddiffat15` than Major league games, suggesting a more volatile early game landscape where leads are larger and less evenly matched. This sets the stage for our hypothesis test, where I formally investigate whether this difference is statistically significant.
 
 ### Interesting Aggregates
 
@@ -104,9 +113,9 @@ Notably, Major league games tend to have **lower average kills and assists** at 
 
 **Missing Not at Random (MNAR)** refers to missingness that is based on the actual missing values themselves, such as high incomes being missing on a survey because people dont want to report them.
 
-In the total Oracle's Elixir LoL dataset, potential candidates for MNAR are the `ban` columns. Teams may choose not to ban certain champions or simply run out of time to choose, and thus bans may not be recorded precisely because no ban was made. Perhaps if we had a column called `bans_skipped` that denotes the total number of bans skipped in the setup phase, we could explain the missingness and make it MAR
+In the total Oracle's Elixir LoL dataset, **potential candidates for MNAR** are the `ban` columns. Teams may choose not to ban certain champions or simply run out of time to choose, and thus bans may not be recorded precisely because no ban was made. Perhaps if we had a column called `bans_skipped` that denoted the total number of bans skipped in the setup phase, we could explain the missingness and make it MAR.
 
-That said, most missingness in the dataset we cleaned appears to be either **Missing by Design** (such as `goldat15` being absent when a game ends before 15 minutes) or **MAR** dependent on observed columns like `date` or `league`. We could not conclusively identify any of these columns were **MNAR**, as there is no strong evidence that the missing values depend on the values themselves rather than on other observed variables.
+That said, most missingness in the dataset we cleaned appears to be either **Missing by Design** (such as `goldat15` being absent when a game ends before 15 minutes) or **MAR** dependent on observed columns such as `date` or `league`. I could not conclusively identify any of the columns I filtered in my dataset were **MNAR**, as there is no strong evidence that the missing values depend on the values themselves rather than on other observed variables.
 
 ### MAR Analysis
 
@@ -146,19 +155,28 @@ In the Oracle's Elixer LoL Dataset, each row has a column labeled **`league`**, 
 
 Tier 1 Professional leagues, such as those above, are seen as more competitive -- leading to highly technical games with **close stats between teams**. In my hypothesis test, I wish to discover whether games played at a Major Tier 1 Professional Leagues have **smaller gold differences** between teams than Minor Leagues do.
 
-**Null Hypothesis**: Major (LCK, LEC, LCP, LTA N, LTA S, LTA) and minor leagues have the same mean absolute gold difference at 15 minutes and come from the same distribution
+### Hypotheses
 
-**Alternative Hypothesis**: Minor leagues have a higher mean absolute gold difference at 15 minutes than major leagues, thus coming from a different distribution
+|                 | Hypothesis                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Null**        | Major and minor leagues have the same mean absolute gold difference at 15 minutes and come from the same distribution                 |
+| **Alternative** | Minor leagues have a higher mean absolute gold difference at 15 minutes than major leagues, thus coming from a different distribution |
 
-**Test Statistic**: Difference in absoluted gold differences between games in Major Leagues vs Minor Leagues
+### Test Details
+
+| Parameter              | Value                                                        |
+| ---------------------- | ------------------------------------------------------------ |
+| **Test Type**          | Permutation Test                                             |
+| **Significance Level** | 1%                                                           |
+| **Test Statistic**     | Difference in mean absolute gold differences (Minor − Major) |
+
+$$|\overline{\text{Gold Diff at 15 - Minor}}| - |\overline{\text{Gold Diff at 15 - Major}}|$$
 
 <div>
 |\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|
 </div>
 
 $$|\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|$$
-
-**Significance Level**: 1%
 
 As this hypothesis seeks to detemine whether two populations **come from the same distribution**, we used a **permuation test** to investigate this difference.
 
