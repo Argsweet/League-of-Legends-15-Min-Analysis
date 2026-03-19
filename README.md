@@ -67,10 +67,13 @@ To begin the exploration of my dataset, I investigated the distribution of Gold 
 <div style="text-align: center;">
     <iframe
     src="assets/univar.html"
-    width="800"
-    height="600"
+    width="100%"
+    height="500"
     frameborder="0"
+    style="display: block; margin: 0 auto; border: none;"
+
     ></iframe>
+
 </div>
 
 This histogram of `goldat15` illustrates that the amount of gold teams accumulate by 15 minutes follows a roughly normal distribution, centered a bit under **25,000 gold**. The shape is noticeably right-skewed, with most teams falling between **22,000 and 28,000 gold** at the 15 minute mark. This distribution suggests that gold accumulation at 15 minutes is fairly consistent across professional games, with extreme values on either end being rare. In the context of our research question, this histogram helps establish what a "typical" 15 minute gold value looks like, providing a baseline for understanding how meaningful deviations from this range might be in predicting match outcomes.
@@ -82,8 +85,9 @@ To begin my bivariate analysis, I attempted to visualize some of the differences
 <iframe
   src="assets/bivar.html"
   width="100%"
-  height="600"
+  height="500"
   frameborder="0"
+  style="display: block; margin: 0 auto; border: none;"
 ></iframe>
 
 To account for the difference in the number of Major vs Minor league games, I constructed a density histogram to fairly compare the distribution of `golddiffat15` across both tiers. Notably, the Major league distribution has a much **sharper and higher peak**, suggesting that gold differences in Tier 1 games are more tightly concentrated around 0. Major league games fall mostly between **-5,000 and 5,000 gold**, while Minor league games span a noticeably wider range of roughly **-7,000 to 7,000 gold**. This visual difference is supported by further calculations -- Minor league games exhibit **~73.7% more variance** in `golddiffat15` than Major league games, suggesting a more volatile early game landscape where leads are larger and less evenly matched. This sets the stage for our hypothesis test, where I formally investigate whether this difference is statistically significant.
