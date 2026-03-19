@@ -21,28 +21,15 @@ After cleaning, my dataset consisted of **18472 rows and 19 columns**. These inc
 | `result`                                   | Match outcome for the team. `True` = win, `False` = loss                                                                                                                         |
 | `participantid`                            | Team ID within the match — either `100` (Blue Side) or `200` (Red Side)                                                                                                          |
 | `league_tier`                              | Tier of the league the match was played in: **Major** (LCK, LEC, LCP, LTA, LTA S, LTA N), **International** (MSI, WLDs, EWC, IC, Asia Masters), or **Minor** (all other leagues) |
-| `split`                                    | The split the match was played in. Teams compete through a regular season before top performers advance to playoffs                                                              |
+| `split`                                    | The split the match was played in. Teams compete through a regular season within their split before top performers advance to playoffs                                           |
 | `date`                                     | Date and time of the match (`YYYY-MM-DD HH:MM:SS`)                                                                                                                               |
 | `length`                                   | Total duration of the game                                                                                                                                                       |
-| `goldat15`, `xpat15`, `csat15`             | The team's gold, XP, and CS totals at the 15-minute mark                                                                                                                         |
+| `goldat15`, `xpat15`, `csat15`             | The team's total gold, XP, and CS totals at the 15-minute mark                                                                                                                   |
 | `golddiffat15`, `xpdiffat15`, `csdiffat15` | The team's gold, XP, and CS advantage/deficit relative to the opponent at 15 minutes                                                                                             |
 | `gold_lead_at15`                           | Boolean flag — `True` if the team had a positive `golddiffat15` at 15 minutes                                                                                                    |
 | `killsat15`, `opp_killsat15`               | Total kills for the team and opponent at 15 minutes                                                                                                                              |
 | `deathsat15`, `opp_deathsat15`             | Total deaths for the team and opponent at 15 minutes                                                                                                                             |
 | `assistsat15`, `opp_assistsat15`           | Total assists for the team and opponent at 15 minutes                                                                                                                            |
-
-- `result`: The outcome of the match for each specific team. True indicates the team that won, False indicates the team that lost
-- `participantid`: The individual ID for each player in a round. In our dataset, this consists of either 100 (Blue Side) or 200 (Red Side) to help us differentiate between teams
-- `league_tier`: Denotes the tier of the league the match was played in. 'Major' refers to games played in LCK, LEC, LCP, LTA, LTA S, or LTA N, all Tier 1 Professional Leagues. 'International' refers to games held in international competitions, such as MSI, WLDs, EWC, IC, and Asia Master, which host teams from both Major and Minor leagues. 'Minor' refers to games played in all other leagues.
-- `split`: Denotes which split the match was played in. Teams compete in regular season matches within their split, with top performers advancing to playoffs.
-- `date`: The date, formatted as YYYY-MM-DD XX:XX:XX
-- `length`: The total length of the game
-- `goldat15`, `xpat15`, `csat15`: The amount of gold, experience, or creep score the team had at the 15 minute mark, respectively
-- `golddiffat15`, `xpdiffat15`, `csdiffat15` : The difference between the team's gold, experience, or creep score the team had at the 15 minute mark, respectively
-- `gold_lead_at15` : A boolean column denoting whether a team had a gold lead (positive 'golddiffat15') at 15 minutes
-- `killsat15`, `opp_killsat15` : The total amount of kills the team and their opponent had at 15 minutes, respectively
-- `deathsat15`, `opp_deathsat15`: The total amount of deaths the team and their opponent had at 15 minutes, respectively
-- `assistsat15`, `opp_assistsat15`: The total amount of assists the team and their opponent had at 15 minutes, respectively
 
 ## Data Cleaning and Exploratory Data Analysis
 
@@ -170,8 +157,6 @@ In the Oracle's Elixer LoL Dataset, each row has a column labeled **`league`**, 
 
 Tier 1 Professional leagues, such as those above, are seen as more competitive -- leading to highly technical games with **close stats between teams**. In my hypothesis test, I wish to discover whether games played at a Major Tier 1 Professional Leagues have **smaller gold differences** between teams than Minor Leagues do.
 
-### Hypotheses
-
 |                 | Hypothesis                                                                                                                            |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | **Null**        | Major and minor leagues have the same mean absolute gold difference at 15 minutes and come from the same distribution                 |
@@ -181,7 +166,6 @@ Tier 1 Professional leagues, such as those above, are seen as more competitive -
 
 | Parameter              | Value                                        |
 | ---------------------- | -------------------------------------------- | ----- | --- | ----- | --- |
-| **Test Type**          | Permutation Test                             |
 | **Significance Level** | 1%                                           |
 | **Test Statistic**     | Difference in mean absolute `golddiffat15` ( | Minor | −   | Major | )   |
 
