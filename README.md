@@ -156,6 +156,8 @@ Tier 1 Professional leagues, such as those above, are seen as more competitive -
 |\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|
 </div>
 
+$$|\overline{\text{Gold Diff at 15 Minutes - Minor}}| - |\overline{\text{Gold Diff at 15 Minutes - Major}}|$$
+
 **Significance Level**: 1%
 
 As this hypothesis seeks to detemine whether two populations **come from the same distribution**, we used a **permuation test** to investigate this difference.
