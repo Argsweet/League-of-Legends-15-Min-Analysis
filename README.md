@@ -168,10 +168,10 @@ Tier 1 Professional leagues, such as those above, are seen as more competitive -
 
 ### Test Details
 
-| Parameter              | Value                                        |
-| ---------------------- | -------------------------------------------- | ----- | --- | ----- | --- |
-| **Significance Level** | 1%                                           |
-| **Test Statistic**     | Difference in mean absolute `golddiffat15` ( | Minor | −   | Major | )   |
+| Parameter              | Value                                                        |
+| ---------------------- | ------------------------------------------------------------ |
+| **Significance Level** | 1%                                                           |
+| **Test Statistic**     | Difference in mean absolute `golddiffat15` ( Minor - Major ) |
 
 As this hypothesis seeks to detemine whether two populations **come from the same distribution**, we used a **permuation test** to investigate this difference.
 
