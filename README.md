@@ -137,8 +137,8 @@ First, I tested on `league` using a permutation test with Total Variation Distan
 
 <iframe
   src="assets/MARTrue.html"
-  width="800"
-  height="600"
+  width="780"
+  height="500"
   frameborder="0"
 ></iframe>
 
