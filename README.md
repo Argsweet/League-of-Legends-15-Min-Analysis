@@ -85,7 +85,7 @@ To begin my bivariate analysis, I attempted to visualize some of the differences
 <iframe
   src="assets/bivar.html"
   width="100%"
-  height="300"
+  height="500"
   frameborder="0"
   style="display: block; margin: 0 auto; border: none;"
 ></iframe>
